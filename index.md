@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Understanding Power Outages (2000–2016)
+title: U.S. Power Grid Failures: Climate, Infrastructure, and Predictive Modeling of Mass-Impact Outages (2000–2016)
 ---
 
 <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 
-# Understanding Power Outages (2000–2016)
+# U.S. Power Grid Failures: Climate, Infrastructure, and Predictive Modeling of Mass-Impact Outages (2000–2016)
 
 **Author:** Jayden Wang
 
