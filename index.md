@@ -39,7 +39,7 @@ The key columns used throughout this analysis are:
 
 | Column | Description |
 |---|---|
-| `ANOMALY.LEVEL` | Oceanic Niño Index (ONI) value; positive = El Niño, negative = La Niña |
+| `ANOMALY.LEVEL` | Oceanic Niño Index (ONI) value; positive (> 0.5) = El Niño, negative (< -0.5) = La Niña |
 | `CLIMATE.CATEGORY` | Climate phase label: `warm`, `cold`, or `normal` |
 | `CUSTOMERS.AFFECTED` | Number of customers impacted — primary measure of outage severity |
 | `OUTAGE.START.DATE` | Date the outage began |
