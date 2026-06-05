@@ -22,8 +22,8 @@ restoration metrics.
 The dataset contains **1,534 rows**, where each row represents a single major power outage
 event.
 
-- Download the data set: https://engineering.purdue.edu/LASCI/research-data/outages
-- Dataset description: https://www.sciencedirect.com/science/article/pii/S2352340918307182#s0015
+- [Download the dataset](https://engineering.purdue.edu/LASCI/research-data/outages)
+- [Full dataset description and variable definitions](https://www.sciencedirect.com/science/article/pii/S2352340918307182#s0015)
 
 Our central research question is:
 
