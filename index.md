@@ -5,11 +5,9 @@ title: U.S. Power Grid Failures: Climate, Infrastructure, and Predictive Modelin
 
 <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 
-# U.S. Power Grid Failures: Climate, Infrastructure, and Predictive Modeling of Mass-Impact Outages (2000–2016)
-
 **Author:** Jayden Wang
 
-*Data of Analysis: 06/05/26*
+*Date of Analysis: 06/05/26*
 
 ---
 
