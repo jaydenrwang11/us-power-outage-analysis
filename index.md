@@ -177,14 +177,14 @@ We test whether `CAUSE.CATEGORY.DETAIL` missingness depends on two candidate var
 outage duration (continuous) and cause category (categorical). We use **absolute difference
 in group means** for the continuous test and **TVD** for the categorical test.
 
-<iframe src="assets/fig_missingness_test1.html" width="100%" height="500px"
+<iframe src="assets/fig_missingness_test1.html" width="100%" height="520px"
 style="border:none;"></iframe>
 
 **Test 1 — Outage Duration (p ≈ 0.08):** We fail to reject the null hypothesis. Despite a
 descriptive difference in group means, the high variance in outage durations means this gap
 is consistent with random chance. Duration does not systematically drive missingness.
 
-<iframe src="assets/fig_missingness_test2.html" width="100%" height="500px"
+<iframe src="assets/fig_missingness_test2.html" width="100%" height="520px"
 style="border:none;"></iframe>
 
 **Test 2 — Cause Category (p ≈ 0.000):** We reject the null hypothesis. The TVD of 0.41
