@@ -73,21 +73,21 @@ style="border:none;"></iframe>
 
 We begin with a simple look at how climate anomalies are distributed across all outage events.
 
-<iframe src="assets/fig_climate_distribution.html" width="100%" height="480px"
+<iframe src="assets/fig_climate_distribution.html" width="100%" height="520px"
 style="border:none;"></iframe>
 
 La Niña (cold) conditions are noticeably more represented than El Niño (warm) conditions. This
 raises a natural follow-up question: were there simply more La Niña years during the
 2000–2016 window, or do outages genuinely cluster during cold anomaly periods?
 
-<iframe src="assets/fig_climate_time_series.html" width="100%" height="480px"
+<iframe src="assets/fig_climate_time_series.html" width="100%" height="520px"
 style="border:none;"></iframe>
 
 El Niño and La Niña periods appear roughly balanced across the timeline, suggesting the cold
 skew in the histogram is not simply a reflection of which climate phases happened to occur
 more often.
 
-<iframe src="assets/fig_outages_by_year.html" width="100%" height="480px"
+<iframe src="assets/fig_outages_by_year.html" width="100%" height="520px"
 style="border:none;"></iframe>
 
 Overlaying annual outage counts against average ONI reveals something striking: a dramatic
@@ -95,20 +95,20 @@ spike in outages between 2011 and 2015, coinciding with a La Niña period. Howev
 is far too large to attribute to climate alone — prior years with similar ONI values show no
 comparable surge. We investigate this next.
 
-<iframe src="assets/fig_choropleth.html" width="100%" height="520px"
+<iframe src="assets/fig_choropleth.html" width="100%" height="540px"
 style="border:none;"></iframe>
 
 No individual state dominates the cold-phase share, ruling out the possibility that a single
 region experiencing disproportionate La Niña exposure is driving the pattern.
 
-<iframe src="assets/fig_regional_breakdown.html" width="100%" height="480px"
+<iframe src="assets/fig_regional_breakdown.html" width="100%" height="520px"
 style="border:none;"></iframe>
 
 Cold-phase outages outnumber warm-phase outages across every U.S. climate region. As we will
 see, this is largely an artifact of the 2011–2015 reporting surge rather than a universal
 climate effect.
 
-<iframe src="assets/fig_causes_by_year.html" width="100%" height="480px"
+<iframe src="assets/fig_causes_by_year.html" width="100%" height="520px"
 style="border:none;"></iframe>
 
 The spike is almost entirely driven by **Intentional Attack** events beginning in 2011. Two
@@ -116,33 +116,33 @@ external factors explain the rise: a change in federal reporting standards that 
 utilities to log critical infrastructure tampering, and a surge in copper theft driven by
 rising commodity prices (~$4.50/lb in 2011).
 
-<iframe src="assets/fig_cause_time_series.html" width="100%" height="480px"
+<iframe src="assets/fig_cause_time_series.html" width="100%" height="520px"
 style="border:none;"></iframe>
 
 The 2011 spike is a textbook **artifact of measurement** — the federal government began
 requiring utilities to report infrastructure tampering under a much wider definition, turning
 previously invisible local incidents into entries in the national dataset.
 
-<iframe src="assets/fig_attack_subtypes.html" width="100%" height="480px"
+<iframe src="assets/fig_attack_subtypes.html" width="100%" height="520px"
 style="border:none;"></iframe>
 
 Vandalism tracks closely with copper commodity prices. Once prices fell ~60% by 2015 and
 reporting loopholes closed, the wave of infrastructure vandalism collapsed almost overnight.
 
-<iframe src="assets/fig_avg_customers_by_cause.html" width="100%" height="480px"
+<iframe src="assets/fig_avg_customers_by_cause.html" width="100%" height="520px"
 style="border:none;"></iframe>
 
 Despite the sheer number of Intentional Attack events, the average customers affected per
 event is very low — consistent with small-scale vandalism rather than catastrophic grid
 failures.
 
-<iframe src="assets/fig_impact_over_time.html" width="100%" height="480px"
+<iframe src="assets/fig_impact_over_time.html" width="100%" height="520px"
 style="border:none;"></iframe>
 
 In 2011, total customer impact rose only modestly while the average per event fell sharply —
 confirming the spike consists of many small incidents, not large-scale failures.
 
-<iframe src="assets/pivot_weather_climate.html" width="100%" height="300px"
+<iframe src="assets/pivot_weather_climate.html" width="100%" height="520px"
 style="border:none;"></iframe>
 
 Focusing on severe weather events specifically, seasonal patterns are clear: Winter Storm
@@ -177,14 +177,14 @@ We test whether `CAUSE.CATEGORY.DETAIL` missingness depends on two candidate var
 outage duration (continuous) and cause category (categorical). We use **absolute difference
 in group means** for the continuous test and **TVD** for the categorical test.
 
-<iframe src="assets/fig_missingness_test1.html" width="100%" height="460px"
+<iframe src="assets/fig_missingness_test1.html" width="100%" height="500px"
 style="border:none;"></iframe>
 
 **Test 1 — Outage Duration (p ≈ 0.08):** We fail to reject the null hypothesis. Despite a
 descriptive difference in group means, the high variance in outage durations means this gap
 is consistent with random chance. Duration does not systematically drive missingness.
 
-<iframe src="assets/fig_missingness_test2.html" width="100%" height="460px"
+<iframe src="assets/fig_missingness_test2.html" width="100%" height="500px"
 style="border:none;"></iframe>
 
 **Test 2 — Cause Category (p ≈ 0.000):** We reject the null hypothesis. The TVD of 0.41
@@ -214,7 +214,7 @@ We compare outages during **normal climate phases** (-0.5 < ONI < 0.5) against o
 - **Significance Level:** α = 0.05
 - **Method:** Permutation test with 1,000 iterations — preferred over a t-test because `CUSTOMERS.AFFECTED` is heavily right-skewed
 
-<iframe src="assets/fig_hypothesis_test.html" width="100%" height="480px"
+<iframe src="assets/fig_hypothesis_test.html" width="100%" height="520px"
 style="border:none;"></iframe>
 
 ### Results
@@ -262,7 +262,7 @@ features known at the time of the outage:
 | `MONTH` | Quantitative ordinal | Pass-through |
 | `CAUSE.CATEGORY` | Nominal categorical | One-Hot Encoding |
 
-<iframe src="assets/fig_baseline_cv.html" width="100%" height="480px"
+<iframe src="assets/fig_baseline_cv.html" width="100%" height="520px"
 style="border:none;"></iframe>
 
 The baseline achieves a mean cross-validated F1-score of **0.9177** across 5 stratified
@@ -287,10 +287,10 @@ We tuned `n_estimators` ∈ {50, 100, 200} and `max_depth` ∈ {5, 10, 15, None}
 GridSearchCV with stratified 5-fold cross-validation. The optimal configuration was
 `max_depth=10`, `n_estimators=200`.
 
-<iframe src="assets/fig_model_comparison.html" width="100%" height="480px"
+<iframe src="assets/fig_model_comparison.html" width="100%" height="520px"
 style="border:none;"></iframe>
 
-<iframe src="assets/fig_feature_importance.html" width="100%" height="480px"
+<iframe src="assets/fig_feature_importance.html" width="100%" height="520px"
 style="border:none;"></iframe>
 
 The final model raises the cross-validated F1-score from **0.9177 to 0.9280** — a +1.03%
@@ -349,7 +349,7 @@ density, split at the median `POPDEN_URBAN` value of **2,315.2 people per square
 | **Test Statistic** | \|F1 Urban − F1 Rural\| |
 | **Significance Level** | α = 0.05 |
 
-<iframe src="assets/fig_fairness_test.html" width="100%" height="480px"
+<iframe src="assets/fig_fairness_test.html" width="100%" height="520px"
 style="border:none;"></iframe>
 
 ### Results
