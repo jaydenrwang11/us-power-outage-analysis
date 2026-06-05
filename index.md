@@ -61,7 +61,8 @@ After loading the raw Excel file, we performed the following cleaning steps:
 - `pd.read_excel` fills empty cells with `NaN` automatically, so no manual replacement was
   needed — missingness is evaluated formally in Step 3
 
-Below is the head of the cleaned DataFrame:
+Below is sample from the cleaned DataFrame. Not all columns are present, and it only shows the 
+head (first 5 rows):
 
 <iframe src="assets/df_head.html" width="100%" height="220px"
 style="border:none;"></iframe>
