@@ -71,7 +71,7 @@ style="border:none;"></iframe>
 
 We begin with a simple look at how climate anomalies are distributed across all outage events.
 
-<iframe src="assets/fig_climate_distribution.html" width="100%" height="600px"
+<iframe src="assets/fig_climate_distribution.html" width="100%" height="450px"
 style="border:none;"></iframe>
 
 La Niña (cold) conditions are noticeably more represented than El Niño (warm) conditions. This
@@ -206,13 +206,11 @@ and equipment failure events are routinely left blank. The missingness of
 We compare outages during **normal climate phases** (|ONI| < 0.5) against outages during
 **severe climate phases** (|ONI| ≥ 0.5).
 
-| | |
-|---|---|
-| **Null Hypothesis (H₀)** | The distribution of `CUSTOMERS.AFFECTED` is identical across normal and severe climate periods. Any observed difference is due to random chance. |
-| **Alternative Hypothesis (H₁)** | The number of customers affected shifts systematically during severe climate phases. |
-| **Test Statistic** | Absolute difference in group means (two-tailed) |
-| **Significance Level** | α = 0.05 |
-| **Method** | Permutation test with 1,000 iterations — preferred over a t-test because `CUSTOMERS.AFFECTED` is heavily right-skewed |
+- **Null Hypothesis (H₀):** The distribution of `CUSTOMERS.AFFECTED` is identical across normal and severe climate periods. Any observed difference is due to random chance.
+- **Alternative Hypothesis (H₁):** The number of customers affected shifts systematically during severe climate phases.
+- **Test Statistic:** Absolute difference in group means (two-tailed)
+- **Significance Level:** α = 0.05
+- **Method:** Permutation test with 1,000 iterations — preferred over a t-test because `CUSTOMERS.AFFECTED` is heavily right-skewed
 
 <iframe src="assets/fig_hypothesis_test.html" width="100%" height="580px"
 style="border:none;"></iframe>
@@ -294,10 +292,40 @@ style="border:none;"></iframe>
 style="border:none;"></iframe>
 
 The final model raises the cross-validated F1-score from **0.9177 to 0.9280** — a +1.03%
-absolute improvement. The feature importance chart confirms that `CAUSE.CATEGORY` dominates
-predictions, consistent with our earlier finding that cause type is the strongest signal for
-whether an outage escalates. `POPDEN_URBAN` also ranks highly, validating our intuition that
-population density meaningfully governs outage scale.
+absolute improvement over the baseline.
+
+Two additional features drove this improvement, both motivated by the physical realities of
+how power outages propagate through infrastructure:
+
+**`GRID_REGION`** maps each state to its macro power-grid division (West, Midwest, South,
+Northeast). In the real world, grid infrastructure is governed by distinct regional balancing
+authorities — CAISO in the West, PJM in the Northeast, ERCOT in Texas — each with different
+interconnection topologies, terrain constraints, and reserve margins. An outage that cascades
+in a densely interconnected Northeastern grid behaves very differently from one in the
+sprawling Western Interconnection. By encoding this structural context, we give the model
+information about the underlying physical system that governs how failures propagate, rather
+than relying solely on the incident trigger.
+
+**`POPDEN_URBAN`** captures urban population density at the outage location. The data
+generating process for `CUSTOMERS.AFFECTED` is fundamentally spatial: a failure affecting a
+dense urban distribution network instantly exposes thousands of customers within a small
+geographic radius, whereas the same failure on a rural transmission line may cover a vast area
+but reach very few people. This feature directly encodes that relationship, allowing the model
+to distinguish high-exposure urban grid failures from low-exposure rural ones before the
+outage resolves.
+
+We also upgraded from a single **Decision Tree** to a **Random Forest** — an ensemble of 200
+trees each trained on a bootstrapped data subset. Averaging predictions across many trees
+dramatically reduces the variance that made the baseline tree prone to overfitting on
+historical noise. The optimal hyperparameters identified via GridSearchCV were
+`n_estimators=200` and `max_depth=10`, where limiting depth to 10 serves as a regularizer
+that forces each tree to capture generalized regional patterns rather than memorizing
+specific outage events in the training folds.
+
+The feature importance chart confirms that `CAUSE.CATEGORY` still dominates predictions,
+consistent with our earlier finding that cause type is the strongest signal for whether an
+outage escalates. `POPDEN_URBAN` also ranks highly, validating the intuition that population
+density is a key structural driver of outage scale.
 
 ---
 
@@ -332,3 +360,65 @@ We **fail to reject the null hypothesis**. The model performs nearly identically
 population density groups, and the small observed difference is consistent with random
 variation. We find no statistically significant evidence of bias with respect to urban vs.
 rural infrastructure context.
+
+---
+
+## Summary and Key Insights
+
+This project traced the full data science lifecycle from raw infrastructure data to a
+deployable predictive model, centered on one question: do global climate anomalies drive the
+scale of power outage impacts in the United States?
+
+The short answer is **no — at least not directly.** Our hypothesis test found no statistically
+significant relationship between ONI severity and customer impact (p ≈ 0.28). The variance in
+outage scale is simply too high for macro-level climate indices to serve as a reliable
+per-event predictor.
+
+The more interesting finding emerged from the EDA. The apparent La Niña dominance in the data
+was almost entirely explained by the **2011–2015 intentional attack surge** — itself an
+artifact of federal reporting standard changes and a copper theft wave tied to commodity
+prices, not climate. This is a reminder that the most important signal in a dataset is
+sometimes not the one you set out to find.
+
+A few other key takeaways:
+
+- **Cause type is the dominant predictor of outage severity.** Whether an outage is a severe
+  weather event vs. intentional attack vs. equipment failure tells you more about likely
+  customer impact than any climate or geographic variable.
+- **Population density governs exposure.** The same failure in an urban distribution network
+  and a rural transmission corridor affects vastly different numbers of people — encoding
+  this physically motivated feature meaningfully improved the model.
+- **Missingness is not random.** The near-zero p-value on the TVD test for `CAUSE.CATEGORY`
+  confirmed that whether detail fields get filled in depends heavily on the type of incident,
+  which has implications for any analysis that relies on granular cause sub-classifications.
+- **The model is equitable.** The fairness analysis found no statistically significant
+  performance gap between urban and rural outages (p ≈ 0.71), suggesting the classifier
+  generalizes consistently across infrastructure contexts.
+
+---
+
+### Areas for Further Exploration
+
+**Richer climate features.** The ONI index is a single scalar that averages a complex global
+phenomenon. Incorporating regional temperature anomalies, precipitation deviations, or NOAA
+storm severity indices would give the model a much more granular view of the climate
+conditions at the time and location of each outage.
+
+**Post-2016 data.** The dataset ends in 2016, missing nearly a decade of grid evolution
+including the rapid growth of distributed solar, increased extreme weather frequency, and
+new critical infrastructure attack patterns. Extending the dataset would likely shift the
+feature importance landscape significantly.
+
+**Demand loss as an alternative target.** `CUSTOMERS.AFFECTED` is a noisy proxy for severity
+— a single hospital losing power may matter more than 10,000 residential customers. Modeling
+`DEMAND.LOSS.MW` as a regression target, or building a multi-class severity tier classifier,
+would produce more operationally useful predictions for utility dispatch teams.
+
+**Grid topology features.** The current model treats geography as a static categorical
+variable. Incorporating actual transmission network data — node degree, betweenness
+centrality, reserve margin — would allow the model to reason about structural vulnerability
+rather than just regional identity.
+
+**Time-series modeling.** Each outage is treated as an independent event, but outages cluster
+in time during major storm systems and heat waves. A sequential model that accounts for
+temporal autocorrelation could substantially improve predictions during high-risk windows.
