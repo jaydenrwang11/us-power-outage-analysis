@@ -58,6 +58,11 @@ After loading the raw Excel file, we performed the following cleaning steps:
 - `pd.read_excel` fills empty cells with `NaN` automatically, so no manual replacement was
   needed — missingness is evaluated formally in Step 3
 
+Below is the head of the cleaned DataFrame:
+
+<iframe src="assets/df_head.html" width="100%" height="220px"
+style="border:none;"></iframe>
+
 ### Exploratory Analysis
 
 We begin with a simple look at how climate anomalies are distributed across all outage events.
