@@ -9,6 +9,8 @@ title: Understanding Power Outages (2000–2016)
 
 **Author:** Jayden Wang
 
+*Data of Analysis: 06/05/26*
+
 ---
 
 ## Introduction
