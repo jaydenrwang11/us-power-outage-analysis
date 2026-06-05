@@ -203,8 +203,8 @@ and equipment failure events are routinely left blank. The missingness of
 
 ### Setup
 
-We compare outages during **normal climate phases** (|ONI| < 0.5) against outages during
-**severe climate phases** (|ONI| ≥ 0.5).
+We compare outages during **normal climate phases** (-0.5 < ONI < 0.5) against outages during
+**severe climate phases** (ONI ≤ -0.5 OR ONI ≥ 0.5).
 
 - **Null Hypothesis (H₀):** The distribution of `CUSTOMERS.AFFECTED` is identical across normal and severe climate periods. Any observed difference is due to random chance.
 - **Alternative Hypothesis (H₁):** The number of customers affected shifts systematically during severe climate phases.
